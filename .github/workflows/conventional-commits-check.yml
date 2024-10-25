@@ -15,7 +15,7 @@ on:
 jobs:
   commitlint:
     runs-on: ubuntu-latest
-    name: Commitlint
+    name: Commitlint Check
     steps:
       - name: Run commitlint
         uses: opensource-nepal/commitlint@v1
