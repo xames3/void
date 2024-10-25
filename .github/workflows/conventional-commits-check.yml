@@ -15,7 +15,7 @@ on:
 jobs:
   commitlint:
     runs-on: ubuntu-latest
-    name: Commitlint Check
+    name: commit-message-check
     steps:
-      - name: Run commitlint
+      - name: run commitlint on the latest commit
         uses: opensource-nepal/commitlint@v1
