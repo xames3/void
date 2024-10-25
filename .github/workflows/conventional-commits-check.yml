@@ -1,0 +1,21 @@
+# Conventional Commit Enforcing Workflow Mk I
+# ===========================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Friday, October 25 2024
+# Last updated on: Friday, October 25 2024
+
+# Workflow name displayed in << repository >>'s "Actions" tab.
+name: conventional-commit-check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    name: Commitlint
+    steps:
+      - name: Run commitlint
+        uses: opensource-nepal/commitlint@v1
