@@ -1,0 +1,50 @@
+# TOPSTSCHOOL Sphinx (Documentation) Building Pages Workflow
+# ==========================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Sunday, October 27 2024
+# Last updated on: Sunday, October 27 2024
+
+name: website-deployment
+author: Akshay Mestry
+description: Build documentation pages using Sphinx
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - $default-branch
+
+permissions:
+  contents: write
+
+env:
+  PUBLISH_BRANCH: docs
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Sphinx Pages
+    runs-on: ubuntu-latest
+    env:
+      OUTPUT_DIR: docs/build/canary
+      SOURCE_DIR: docs/source
+      PY_BUILD: 3.12.1
+    steps:
+      - name: Build
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          fetch-depth: 1
+          python-version: ${{ env.PY_BUILD }}
+          cache: pip
+        run: |
+          echo "Clean installing latest version of sphinx and other runtime dependencies..."
+          python -m pip install -Uq pip -rrequirements.txt
+          echo "Building documentation pages..."
+          sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
