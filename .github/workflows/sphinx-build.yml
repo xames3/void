@@ -6,8 +6,6 @@
 # Last updated on: Sunday, October 27 2024
 
 name: website-deployment
-author: Akshay Mestry
-description: Build documentation pages using Sphinx
 
 on:
   push:
@@ -36,13 +34,14 @@ jobs:
       SOURCE_DIR: docs/source
       PY_BUILD: 3.12.1
     steps:
-      - name: Build
-        uses: actions/checkout@v4
-        uses: actions/setup-python@v5
+      - name: Checkout
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           fetch-depth: 1
           python-version: ${{ env.PY_BUILD }}
           cache: pip
+      - name: Sphinx build
         run: |
           echo "Clean installing latest version of sphinx and other runtime dependencies..."
           python -m pip install -Uq pip -rrequirements.txt
