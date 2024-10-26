@@ -1,0 +1,96 @@
+# TOPST SCHOOL's GitHub Pages Feature Branch Workflow
+# ===================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Sunday, September 01 2024
+# Last updated on: Sunday, September 01 2024
+
+# Workflow name displayed in TOPST SCHOOL's "Actions" tab.
+name: FEAT | Build and Deploy Documents
+
+# A workflow with the following "on" value will run when a "push" is made
+# to the "feature" branch or pull request is made to "dev" in the
+# workflow's repository. For example, the "push" event has a branches filter
+# that causes this workflow to run only when a push to a branch that
+# matches the branches filter occurs, in this case, the "dev" branch.
+on:
+  push:
+    branches:
+      - "canary"
+
+# We're using permissions to modify the default permissions granted to
+# the ``GITHUB_TOKEN``, adding or removing access as required, so that we
+# only allow the minimum required access.
+permissions:
+  contents: write  # Only write permissions to the repository contents are needed for deployment.
+
+# A map of variables that are available to the steps of all jobs in the workflow.
+env:
+  OUTPUT_DIR: docs/build/  # Directory where Sphinx will output the built HTML files.
+  SOURCE_DIR: docs/source/  # Directory containing the Sphinx source files (rST or MD).
+  PUBLISH_BRANCH: docs  # Branch where the static site will be published.
+  PY_BUILD: 3.12.1  # Python version to be used for building the documentation.
+
+# We're using concurrency to ensure that only a single job or workflow
+# using the same concurrency group will run at a time.
+concurrency:
+  group: ${{ github.ref }}  # Groups by branch, so jobs in the same branch won't overlap.
+  cancel-in-progress: true  # Cancels any currently running jobs in the same group if a new one starts.
+
+# A workflow run is made up of one or more jobs, which run in parallel by default.
+# The ``ubuntu-latest`` label currently uses the Ubuntu 22.04 runner image.
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Runs the job on the latest available Ubuntu runner.
+    steps:
+      # Step 1: Check out the code from the repository to the runner.
+      - name: Checkout TOPST SCHOOL Code (Feature)
+        uses: actions/checkout@v4  # Checks out the repository code into the runner for the workflow to use.
+        with:
+          fetch-depth: 1  # Fetch only the latest commit for faster checkouts.
+
+      # Step 2: Set up the specified Python version and cache pip dependencies for faster builds.
+      - name: Set Up Python ${{ env.PY_BUILD }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PY_BUILD }}  # Sets up the Python version specified in the environment variables.
+          cache: "pip"  # Caches pip dependencies to speed up subsequent builds.
+
+      # Step 3: Install the project's Python dependencies.
+      - name: Install Python Dependencies...
+        run: |
+          echo "Installing Coeus and Jupyter Lite..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Build the Sphinx documentation into HTML format.
+      - name: Build Sphinx Documentation
+        # -E: Rebuild all files, not just those that have changed.
+        # -W: Treat warnings as errors.
+        # -a: Write all output files (default only writes new and changed files).
+        # -q: Run in quiet mode, with minimal output.
+        run: |
+          echo "Building TOPST SCHOOL bilingual documentation..."
+          sphinx-build -Eaq --builder html --define language=en ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }} && sphinx-build -Eaq --builder html --define language=es ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}/es
+
+      # Step 5: Deploy the built HTML files to the specified branch (GitHub Pages).
+      - name: FEAT | Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/canary') }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Deploys to the gh-pages branch.
+          publish_branch: ${{ env.PUBLISH_BRANCH }}  # Uses the GitHub token for authentication.
+          publish_dir: ${{ env.OUTPUT_DIR }}  # Directory to publish (the output of the Sphinx build).
+          force_orphan: false  # Do not force an orphan commit, preserving commit history.
+          enable_jekyll: false  # Disables Jekyll processing on GitHub Pages, which is unnecessary for Sphinx-generated HTML.
+          user_email: "github-actions[bot]@users.noreply.github.com"  # Email to associate with the commit.
+          user_name: "github-actions[bot]"  # Name to associate with the commit.
+          full_commit_message: ${{ github.event.head_commit.message }}  # Use the commit message from the push event.
+
+      # Step 6: Provide response after deployment.
+      - name: Notify Success
+        if: success()
+        run: echo "✅ Documentation successfully built and deployed to GitHub Pages (Dev)."
+      - name: Notify Failure
+        if: failure()
+        run: echo "❌ Failed to build or deploy the documentation from the dev branch. Please check the logs."

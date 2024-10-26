@@ -1,0 +1,24 @@
+# Pull Requests Labeler Workflow Mk I
+# ===================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Friday, October 25 2024
+# Last updated on: Friday, October 25 2024
+
+# Workflow metadata displayed in << repository >>'s "Actions" tab.
+name: add-pull-request-labels
+description: 'Automatically add labels to new pull requests based on the paths of files being changed'
+author: 'Akshay Mestry'
+
+on:
+- pull_request_target
+
+jobs:
+  labeler:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: add label to the latest pull request
+    - uses: actions/labeler@v5
