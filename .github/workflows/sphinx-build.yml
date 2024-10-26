@@ -34,10 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - uses: actions/setup-python@v5
+      - name: Setup
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PY_BUILD }}
           cache: pip
@@ -47,7 +48,7 @@ jobs:
           python -m pip install -Uq pip -rrequirements.txt
           echo "Building documentation pages..."
           sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
-      - name: Manage
+      - name: Commit
         uses: actions/upload-artifact@v4
         with:
           name: html-pages
