@@ -8,7 +8,7 @@ name: DEV | Build and Deploy Documents
 on:
   push:
     branches:
-      - docs
+      - dev
 
 # We're using permissions to modify the default permissions granted to
 # the ``GITHUB_TOKEN``, adding or removing access as required, so that we
@@ -20,7 +20,7 @@ permissions:
 env:
   OUTPUT_DIR: docs/build/  # Directory where Sphinx will output the built HTML files.
   SOURCE_DIR: docs/source/  # Directory containing the Sphinx source files (rST or MD).
-  PUBLISH_BRANCH: gh-pages  # Branch where the static site will be published.
+  PUBLISH_BRANCH: docs  # Branch where the static site will be published.
   PY_BUILD: 3.12.1  # Python version to be used for building the documentation.
 
 # We're using concurrency to ensure that only a single job or workflow
