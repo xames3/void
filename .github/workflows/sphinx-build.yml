@@ -37,8 +37,8 @@ jobs:
       PY_BUILD: 3.12.1
     steps:
       - name: Build
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+        uses: actions/checkout@v4
+        uses: actions/setup-python@v5
         with:
           fetch-depth: 1
           python-version: ${{ env.PY_BUILD }}
