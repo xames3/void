@@ -1,14 +1,22 @@
-name: DEV | Build and Deploy Documents
+# TOPST SCHOOL's GitHub Pages Feature Branch Workflow
+# ===================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Sunday, September 01 2024
+# Last updated on: Sunday, September 01 2024
+
+# Workflow name displayed in TOPST SCHOOL's "Actions" tab.
+name: FEAT | Build and Deploy Documents
 
 # A workflow with the following "on" value will run when a "push" is made
-# to the "dev" branch in the workflow's repository. For example, the "push"
-# event has a branches filter that causes this workflow to run only when
-# a push to a branch that matches the branches filter occurs, in this
-# case, the "dev" branch.
+# to the "feature" branch or pull request is made to "dev" in the
+# workflow's repository. For example, the "push" event has a branches filter
+# that causes this workflow to run only when a push to a branch that
+# matches the branches filter occurs, in this case, the "dev" branch.
 on:
   push:
     branches:
-      - canary
+      - "canary"
 
 # We're using permissions to modify the default permissions granted to
 # the ``GITHUB_TOKEN``, adding or removing access as required, so that we
@@ -36,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest  # Runs the job on the latest available Ubuntu runner.
     steps:
       # Step 1: Check out the code from the repository to the runner.
-      - name: Checkout TOPST SCHOOL Code (Dev)
+      - name: Checkout TOPST SCHOOL Code (Feature)
         uses: actions/checkout@v4  # Checks out the repository code into the runner for the workflow to use.
         with:
           fetch-depth: 1  # Fetch only the latest commit for faster checkouts.
@@ -66,9 +74,9 @@ jobs:
           sphinx-build -Eaq --builder html --define language=en ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }} && sphinx-build -Eaq --builder html --define language=es ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}/es
 
       # Step 5: Deploy the built HTML files to the specified branch (GitHub Pages).
-      - name: DEV | Deploy to GitHub Pages
+      - name: FEAT | Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/canary' }}
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/canary/') }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}  # Deploys to the gh-pages branch.
           publish_branch: ${{ env.PUBLISH_BRANCH }}  # Uses the GitHub token for authentication.
