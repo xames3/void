@@ -57,7 +57,7 @@ jobs:
           cache: "pip"  # Caches pip dependencies to speed up subsequent builds.
 
       # Step 3: Install the project's Python dependencies.
-      - name: Install Python Dependencies
+      - name: Install Python Dependencies...
         run: |
           echo "Installing Coeus and Jupyter Lite..."
           python -m pip install --upgrade pip
