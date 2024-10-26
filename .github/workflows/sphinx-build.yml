@@ -20,6 +20,9 @@ permissions:
 
 env:
   PUBLISH_BRANCH: docs
+  OUTPUT_DIR: docs/build/canary
+  SOURCE_DIR: docs/source
+  PY_BUILD: 3.12.1
 
 concurrency:
   group: ${{ github.ref }}
@@ -29,17 +32,12 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-    env:
-      OUTPUT_DIR: docs/build/canary
-      SOURCE_DIR: docs/source
-      PY_BUILD: 3.12.1
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Setup
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PY_BUILD }}
           cache: pip
@@ -49,20 +47,28 @@ jobs:
           python -m pip install -Uq pip -rrequirements.txt
           echo "Building documentation pages..."
           sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
+      - name: Manage
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-pages
+          path: ${{ env.OUTPUT_DIR }}
   deploy:
     name: deploy
     needs: build
     runs-on: ubuntu-latest
-    env:
-      OUTPUT_DIR: docs/build/canary
     steps:
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: html-pages
+          path: ${{ env.OUTPUT_DIR }}
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: ${{ env.PUBLISH_BRANCH }}
           publish_dir: ${{ env.OUTPUT_DIR }}
-          force_orphan: false
+          force_orphan: true
           enable_jekyll: false
           user_email: "github-actions[bot]@users.noreply.github.com"
           user_name: "topstschool[bot]"
