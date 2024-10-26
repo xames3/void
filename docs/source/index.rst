@@ -6,9 +6,7 @@
 The Void documentation
 ======================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Add your content using ``reStructuredText`` syntax.
 
 We're testing the website and please expect a lot of bugs!
 
