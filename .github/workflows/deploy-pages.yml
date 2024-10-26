@@ -68,7 +68,7 @@ jobs:
       # Step 5: Deploy the built HTML files to the specified branch (GitHub Pages).
       - name: DEV | Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/canary' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}  # Deploys to the gh-pages branch.
           publish_branch: ${{ env.PUBLISH_BRANCH }}  # Uses the GitHub token for authentication.
