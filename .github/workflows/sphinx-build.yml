@@ -5,7 +5,7 @@
 # Created on: Sunday, October 27 2024
 # Last updated on: Sunday, October 27 2024
 
-name: website-deployment
+name: deployment
 
 on:
   push:
@@ -19,8 +19,7 @@ permissions:
   contents: write
 
 env:
-  PUBLISH_BRANCH: docs
-  OUTPUT_DIR: docs/build/canary
+  OUTPUT_DIR: docs/build/
   SOURCE_DIR: docs/source
   PY_BUILD: 3.12.1
 
