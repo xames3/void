@@ -6,8 +6,6 @@
 # Last updated on: Sunday, October 27 2024
 
 name: website-deployment
-author: Akshay Mestry
-description: Build documentation pages using Sphinx
 
 on:
   push:
@@ -22,6 +20,9 @@ permissions:
 
 env:
   PUBLISH_BRANCH: docs
+  OUTPUT_DIR: docs/build/
+  SOURCE_DIR: docs/source
+  PY_BUILD: 3.12.1
 
 concurrency:
   group: ${{ github.ref }}
@@ -29,22 +30,37 @@ concurrency:
 
 jobs:
   build:
-    name: Build Sphinx Pages
+    name: build
     runs-on: ubuntu-latest
-    env:
-      OUTPUT_DIR: docs/build/canary
-      SOURCE_DIR: docs/source
-      PY_BUILD: 3.12.1
     steps:
-      - name: Build
+      - name: Checkout
         uses: actions/checkout@v4
-        uses: actions/setup-python@v5
         with:
           fetch-depth: 1
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
           python-version: ${{ env.PY_BUILD }}
           cache: pip
+      - name: Build
+        id: build
         run: |
           echo "Clean installing latest version of sphinx and other runtime dependencies..."
           python -m pip install -Uq pip -rrequirements.txt
           echo "Building documentation pages..."
           sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
+      - name: Commit
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.OUTPUT_DIR }}
+  deploy:
+    name: deploy
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
