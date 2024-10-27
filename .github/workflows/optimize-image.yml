@@ -1,0 +1,38 @@
+# TOPSTSCHOOL Sphinx (Documentation) Image Size Optimization Workflow
+# ===================================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Sunday, October 27 2024
+# Last updated on: Sunday, October 27 2024
+
+name: optimize-images
+run-name: Image optimization workflow started after ${{ github.actor }}'s push
+
+on:
+  pull_request:
+    paths:
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.png'
+      - '**.webp'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: optimize
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Compress images
+        uses: calibreapp/image-actions@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
