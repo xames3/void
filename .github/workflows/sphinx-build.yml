@@ -43,34 +43,24 @@ jobs:
           python-version: ${{ env.PY_BUILD }}
           cache: pip
       - name: Build
+        id: build
         run: |
           echo "Clean installing latest version of sphinx and other runtime dependencies..."
           python -m pip install -Uq pip -rrequirements.txt
           echo "Building documentation pages..."
           sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
       - name: Commit
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: html-pages
           path: ${{ env.OUTPUT_DIR }}
   deploy:
     name: deploy
     needs: build
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/download-artifact@v4
-        with:
-          name: html-pages
-          path: ${{ env.OUTPUT_DIR }}
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: ${{ env.PUBLISH_BRANCH }}
-          publish_dir: ${{ env.OUTPUT_DIR }}
-          force_orphan: true
-          enable_jekyll: false
-          user_email: "github-actions[bot]@users.noreply.github.com"
-          user_name: "topstschool[bot]"
-          full_commit_message: ${{ github.event.head_commit.message }}
+        id: deployment
+        uses: actions/deploy-pages@v4
