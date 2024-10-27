@@ -41,25 +41,29 @@ jobs:
         with:
           python-version: ${{ env.PY_BUILD }}
           cache: pip
-      - name: Build
+      - name: Build pages with Sphinx
         id: build
         run: |
           echo "Clean installing latest version of sphinx and other runtime dependencies..."
           python -m pip install -Uq pip -rrequirements.txt
           echo "Building documentation pages..."
           sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
-      - name: Commit
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.OUTPUT_DIR }}
   deploy:
     name: deploy
     needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{steps.deployment.outputs.page_url}}
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
