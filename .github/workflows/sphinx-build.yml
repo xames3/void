@@ -6,15 +6,13 @@
 # Last updated on: Sunday, October 27 2024
 
 name: deployment
-run-name: ${{ github.actor }} started ${{ github.workflow }} workflow
+run-name: Auto-started ${{ github.workflow }} workflow after linting
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - $default-branch
+  workflow_run:
+    workflows: [linting]
+    types:
+      - completed
 
 permissions:
   contents: write
