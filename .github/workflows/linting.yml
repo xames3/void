@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   lint:
-    name: lint-check
+    name: linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,10 +39,13 @@ jobs:
         with:
           python-version: ${{ env.PYTHONVERSION }}
           cache: pip
-      - name: Build pages with Sphinx
-        id: build
+      - name: Lint
+        id: linting
         run: |
           echo "Clean installing latest version of black, isort and flake8..."
           python -m pip install -Uq pip black isort flake8
           echo "Linting and fixing code..."
           black ${{ env.SOURCEDIR }} && isort --sl ${{ env.SOURCEDIR }} && flake8 ${{ env.SOURCEDIR }}
+      - name: Building and Deploy
+        id: build
+        uses: ./.github/workflows/sphinx-build
