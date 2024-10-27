@@ -6,7 +6,7 @@
 # Last updated on: Sunday, October 27 2024
 
 name: deployment
-run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+run-name: ${{ github.actor }} started ${{ github.workflow }} workflow
 
 on:
   push:
@@ -26,7 +26,7 @@ env:
   PYTHONVERSION: 3.12.1
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
