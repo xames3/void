@@ -1,19 +1,18 @@
-# TOPSTSCHOOL Sphinx (Documentation) Building Pages Workflow
-# ==========================================================
+# TOPSTSCHOOL Sphinx (Documentation) Deployment Workflow
+# ======================================================
 #
 # Author: Akshay Mestry <xa@mes3.dev>
 # Created on: Sunday, October 27 2024
 # Last updated on: Sunday, October 27 2024
 
 name: deployment
+run-name: Auto-started ${{ github.workflow }} workflow after linting
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - $default-branch
+  workflow_run:
+    workflows: [linting]
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -25,13 +24,14 @@ env:
   PYTHONVERSION: 3.12.1
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Checkout
         uses: actions/checkout@v4

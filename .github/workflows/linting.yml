@@ -1,0 +1,47 @@
+# TOPSTSCHOOL Sphinx (Documentation) Document & Code Linting Workflow
+# ==================================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Sunday, October 27 2024
+# Last updated on: Sunday, October 27 2024
+
+name: linting
+run-name: Linting python and reStructuredText files
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - '**.rst'
+
+permissions:
+  contents: read
+
+env:
+  SOURCEDIR: docs/source
+  PYTHONVERSION: 3.12.1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHONVERSION }}
+          cache: pip
+      - name: Linter
+        id: linting
+        run: |
+          echo "Clean installing latest version of black, isort and flake8..."
+          python -m pip install -Uq pip black isort flake8
+          echo "Linting and fixing code..."

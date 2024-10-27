@@ -19,3 +19,4 @@ Although haphazardous, void is licensed under the MIT License. See the
 `LICENSE`_ file for more details.
 
 .. _LICENSE: https://github.com/xames3/coeus-sphinx-theme/blob/main/LICENSE
+
