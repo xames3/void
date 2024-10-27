@@ -19,9 +19,10 @@ permissions:
   contents: write
 
 env:
-  OUTPUT_DIR: docs/build/
-  SOURCE_DIR: docs/source
-  PY_BUILD: 3.12.1
+  ARTIFACTNAME: topstschool-pages
+  BUILDDIR: docs/build/
+  SOURCEDIR: docs/source
+  PYTHONVERSION: 3.12.1
 
 concurrency:
   group: ${{ github.ref }}
@@ -39,7 +40,7 @@ jobs:
       - name: Setup
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PY_BUILD }}
+          python-version: ${{ env.PYTHONVERSION }}
           cache: pip
       - name: Build pages with Sphinx
         id: build
@@ -47,11 +48,12 @@ jobs:
           echo "Clean installing latest version of sphinx and other runtime dependencies..."
           python -m pip install -Uq pip -rrequirements.txt
           echo "Building documentation pages..."
-          sphinx-build -EWqa --builder html ${{ env.SOURCE_DIR }} ${{ env.OUTPUT_DIR }}
+          sphinx-build -EWqa --builder html ${{ env.SOURCEDIR }} ${{ env.BUILDDIR }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.OUTPUT_DIR }}
+          name: ${{ ARTIFACTNAME }}
+          path: ${{ env.BUILDDIR }}
   deploy:
     name: deploy
     needs: build
@@ -60,10 +62,12 @@ jobs:
       pages: write
       id-token: write
     environment:
-      name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}
+      name: canary
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ ARTIFACTNAME }}
