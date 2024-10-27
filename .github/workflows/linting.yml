@@ -39,12 +39,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHONVERSION }}
           cache: pip
-      - name: Lint
+      - name: Linter
         id: linting
         run: |
           echo "Clean installing latest version of black, isort and flake8..."
           python -m pip install -Uq pip black isort flake8
           echo "Linting and fixing code..."
-      - name: Building and Deploy
-        id: build
-        uses: ./.github/workflows/sphinx-build
