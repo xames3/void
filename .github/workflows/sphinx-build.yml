@@ -52,7 +52,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: ${{ ARTIFACTNAME }}
+          name: ${{ env.ARTIFACTNAME }}
           path: ${{ env.BUILDDIR }}
   deploy:
     name: deploy
@@ -70,4 +70,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          artifact_name: ${{ ARTIFACTNAME }}
+          artifact_name: ${{ env.ARTIFACTNAME }}
