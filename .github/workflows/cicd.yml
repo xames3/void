@@ -1,0 +1,86 @@
+# TOPSTSCHOOL Sphinx (Documentation) End-to-End Workflow
+# ======================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Sunday, October 27 2024
+# Last updated on: Sunday, October 27 2024
+
+name: CI/CD
+run-name: Workflow initiated after ${{ github.actor }}'s actions
+
+on:
+  workflow_dispatch:
+
+env:
+  ARTIFACTNAME: topstschool-pages
+  BUILDDIR: docs/build/
+  SOURCEDIR: docs/source
+  PYTHONVERSION: 3.12.1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: linting
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHONVERSION }}
+          cache: pip
+      - name: Lint
+        id: linting
+        run: |
+          python -m pip install -Uq pip -rrequirements-dev.txt
+          echo "Checking code for issues..."
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHONVERSION }}
+          cache: pip
+      - name: Build pages with Sphinx
+        id: build
+        run: |
+          echo "Clean installing latest version of sphinx and other runtime dependencies..."
+          python -m pip install -Uq pip -rrequirements.txt
+          echo "Building documentation pages..."
+          sphinx-build -EWqa --builder html ${{ env.SOURCEDIR }} ${{ env.BUILDDIR }}
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: ${{ env.ARTIFACTNAME }}
+          path: ${{ env.BUILDDIR }}
+  deploy:
+    name: deploy
+    needs: [lint, build]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: canary
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.ARTIFACTNAME }}
