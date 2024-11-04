@@ -1,0 +1,110 @@
+name: Bug report
+description: Create and report a reproducible bug or regression to help us improve
+labels: ['bug', 'community']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Hello hello!
+
+        Before submitting a new bug/issue, please check the below links to see if there is a solution or question posted there already:
+         - TOPSTSCHOOL Documentation (Sphinx)'s [Discussions](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/discussions)
+         - TOPSTSCHOOL Documentation (Sphinx)'s [Open Issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+         - TOPSTSCHOOL Documentation (Sphinx)'s [Closed Issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed)
+
+        It'd be much better if you could provide as much information as possible so that it will help everyone identify and fix the issue/bug.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe your issue
+      description: Provide a clear description of the problems you are running into while using or working with this project.
+      placeholder: While checking out the TOPSTSCHOOL Documentation (Sphinx)'s website, I saw...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Describe the steps we have to take to reproduce the behavior.
+      placeholder: |
+        1. Navigate to ...
+        2. Scroll down to ....
+        3. And click on ....
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Provide a clear description of what you expected to happen.
+      placeholder: |
+        As a user, I expected ..., but I'm seeing ...
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: How often does this bug happen?
+      description: |
+        Following the repro steps above, how easily are you able to reproduce this bug?
+      options:
+        - Every time
+        - Often
+        - Sometimes
+        - Only once
+  - type: textarea
+    id: screenshots_or_videos
+    attributes:
+      label: Screenshots or Videos
+      description: |
+        If applicable, add screenshots or a video to help explain your problem.
+        For more information on the supported file image/file types and the file size limits, please refer
+        to the following link: https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/attaching-files
+      placeholder: |
+        You can drag your video or image files inside of this editor...
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: |
+        Please let us know which Operating System, Browser and Browser version you were using when the issue occurred.
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: dropdown
+    id: adapter
+    attributes:
+      label: TOPSTSCHOOL Documentation (Sphinx) adapter
+      description: |
+        Please let us know which adapter of TOPSTSCHOOL Documentation (Sphinx) you were using when the issue occurred.
+      options:
+        - react-form
+        - solid-form
+        - lit-form
+        - vue-form
+        - vanilla
+  - type: input
+    id: rq-version
+    attributes:
+      label: TOPSTSCHOOL Documentation (Sphinx) version
+      description: |
+        Please let us know the exact version of TOPSTSCHOOL Documentation (Sphinx) you were using when the issue occurred. Please don't just put in "latest", as this is subject to change.
+      placeholder: |
+        e.g. v3.30.1
+    validations:
+      required: true
+  - type: input
+    id: ts-version
+    attributes:
+      label: TypeScript version
+      description: |
+        If you are using TypeScript, please let us know the exact version of TypeScript you were using when the issue occurred.
+      placeholder: |
+        e.g. v4.5.4
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
