@@ -1,0 +1,93 @@
+# TOPSTSCHOOL Sphinx (Documentation) Pull Request Template
+# ========================================================
+#
+# Author: Akshay Mestry <xa@mes3.dev>
+# Created on: Tuesday, November 05 2024
+# Last updated on: Tuesday, November 05 2024
+
+name: Pull request
+description: We are so excited to see your contribution! Please follow the template to ensure your PR is reviewed smoothly.
+title: '[PR]: '
+labels: ['community']
+projects: ['ciesin-geospatial/2']
+assignees:
+  - 'xames3'
+  - 'jfmartinez4'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for your contribution!
+        Your hard work and dedication are what keep this project thriving. To help us understand and review your changes quickly, please complete the checklist and provide all relevant details.
+  - type: input
+    id: pr-summary
+    attributes:
+      label: Brief summary
+      description: Provide a concise summary of what this PR does.
+      placeholder: 'E.g., adds navigation toggle buttons.'
+    validations:
+      required: true
+  - type: textarea
+    id: detailed-description
+    attributes:
+      label: Describe your PR
+      description: Describe your changes in detail, explaining the problem you're solving or the feature you're adding.
+      placeholder: |
+        - The reason behind these changes
+        - How the solution is implemented
+        - Any design decisions you made
+    validations:
+      required: true
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Type of PR
+      description: Select the type of change your pull request introduces.
+      options:
+        - Bug fix
+        - New feature
+        - Documentation update
+        - Code style or refactor
+        - Configuration change
+        - Build or dependency update
+      default: Bug fix
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Contributor Checklist
+      description: 'Please confirm that you've completed the following before submitting:'
+      options:
+        - label: I have read the [CONTRIBUTING.md](#) guidelines.
+          required: true
+        - label: I have tested my changes locally and ensured they work as expected.
+          required: true
+  - type: textarea
+    id: testing-instructions
+    attributes:
+      label: Testing instructions
+      description: Please include clear instructions on how to test your changes.
+      placeholder: |
+        1. Steps to set up the environment
+        2. Commands to run
+        3. Expected outcome
+  - type: input
+    id: related-issues
+    attributes:
+      label: Related issues
+      description: Link any related issues or pull requests (if applicable).
+      placeholder: 'E.g., #42, #9'
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Additional notes
+      description: Include any additional context, concerns, or questions you have.
+      placeholder: 'E.g., Potential side effects, areas to watch out for, etc.'
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you!
+        We deeply value your efforts to contribute. Your PR will be reviewed soon, and we'll keep you posted.
+        
+        If you have any questions or need assistance, feel free to reach out!
