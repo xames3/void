@@ -13,33 +13,22 @@ body:
         Thank you for taking the time to fill out this bug report! Your feedback is essential to help us improve. Please follow the template and provide as much detail as possible.
 
         We truly appreciate you bringing this to our attention. Providing clear and concise details helps us address issues faster. Before you proceed, please ensure you've checked the following:
-        - [ ] You've searched [open issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) to see if your bug has already been reported.
-        - [ ] You've searched [closed issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed) to see if your bug has already been fixed.
+        - [  ] You've gone through the [open issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) to see if your bug has already been reported.
+        - [  ] You've searched [closed issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed) to see if your bug has already been fixed.
   - type: input
     id: bug-summary
     attributes:
       label: Brief summary
       description: Please provide a quick, one-sentence description of the bug.
-      placeholder: 'e.g., I am unable to click on the Accounts Setup page.'
+      placeholder: 'e.g., unable to submit feedback.'
     validations:
       required: true
   - type: textarea
     id: detailed-description
     attributes:
       label: Describe your issue
-      description: Describe the bug in detail. Include any steps necessary to reproduce it, what you expected to happen, and what actually happened.
-      placeholder: While going through the website, I saw...
-    validations:
-      required: true
-  - type: textarea
-    id: steps
-    attributes:
-      label: Steps to reproduce
-      description: Describe the steps to reproduce the behavior.
-      placeholder: |
-        1. Navigate to ...
-        2. Scroll down to ....
-        3. And click on ....
+      description: Describe the bug in detail. Include any steps necessary to reproduce it and what actually happened.
+      placeholder: I saw ...
     validations:
       required: true
   - type: textarea
@@ -48,7 +37,7 @@ body:
       label: Expected behavior
       description: What you expected to happen?
       placeholder: |
-        I expected ..., but I'm seeing ...
+        I expected ... but I'm seeing ...
     validations:
       required: true
   - type: dropdown
@@ -80,28 +69,23 @@ body:
       label: Screenshots or Videos
       description: |
         If applicable, add screenshots or a video to help explain your problem.
-        For more information on the supported file image/file types and the file size limits, please refer
-        to the following link: https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/attaching-files
       placeholder: |
-        You can drag your video or image files inside of this editor...
+        Drag your video or image files inside of this editor...
   - type: textarea
     id: additional-context
     attributes:
       label: Additional context
       description: Provide any additional context or information you think would be helpful.
-      placeholder: 'e.g., Error logs, related issues, or any recent changes in the environment'
-  - type: checkboxes
+      placeholder: 'e.g., error logs, related issues, or any recent changes in the environment'
+  - type: dropdown
     id: impact-level
     attributes:
       label: Bug severity
       description: How does this bug affect your work?
       options:
-        - label: Minor
-          required: false
-        - label: Major
-          required: false
-        - label: Critical
-          required: false
+        - Minor
+        - Major
+        - Critical
   - type: checkboxes
     id: terms
     attributes:
