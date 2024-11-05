@@ -1,31 +1,41 @@
 name: Bug report
-description: Create and report a reproducible bug or regression to help us improve
+description: File a bug report.
+title: '[Bug]: '
 labels: ['bug', 'community']
+projects: ['xames3/1']
+assignees:
+  - 'xames3'
+  - 'jfmartinez4'
 body:
   - type: markdown
     attributes:
       value: |
-        Hello hello!
+        Thank you for taking the time to fill out this bug report! Your feedback is essential to help us improve. Please follow the template and provide as much detail as possible.
 
-        Before submitting a new bug/issue, please check the below links to see if there is a solution or question posted there already:
-         - TOPSTSCHOOL Documentation (Sphinx)'s [Discussions](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/discussions)
-         - TOPSTSCHOOL Documentation (Sphinx)'s [Open Issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
-         - TOPSTSCHOOL Documentation (Sphinx)'s [Closed Issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed)
-
-        It'd be much better if you could provide as much information as possible so that it will help everyone identify and fix the issue/bug.
+        We truly appreciate you bringing this to our attention. Providing clear and concise details helps us address issues faster. Before you proceed, please ensure you've checked the following:
+        - [ ] You've searched [open issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) to see if your bug has already been reported.
+        - [ ] You've searched [closed issues](https://github.com/ciesin-geospatial/TOPSTSCHOOL-SPHINX/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed) to see if your bug has already been fixed.
+  - type: input
+    id: bug-summary
+    attributes:
+      label: Brief summary
+      description: Please provide a quick, one-sentence description of the bug.
+      placeholder: 'e.g., I am unable to click on the Accounts Setup page.'
+    validations:
+      required: true
   - type: textarea
-    id: description
+    id: detailed-description
     attributes:
       label: Describe your issue
-      description: Provide a clear description of the problems you are running into while using or working with this project.
-      placeholder: While checking out the TOPSTSCHOOL Documentation (Sphinx)'s website, I saw...
+      description: Describe the bug in detail. Include any steps necessary to reproduce it, what you expected to happen, and what actually happened.
+      placeholder: While going through the website, I saw...
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
       label: Steps to reproduce
-      description: Describe the steps we have to take to reproduce the behavior.
+      description: Describe the steps to reproduce the behavior.
       placeholder: |
         1. Navigate to ...
         2. Scroll down to ....
@@ -36,21 +46,34 @@ body:
     id: expected
     attributes:
       label: Expected behavior
-      description: Provide a clear description of what you expected to happen.
+      description: What you expected to happen?
       placeholder: |
-        As a user, I expected ..., but I'm seeing ...
+        I expected ..., but I'm seeing ...
     validations:
       required: true
   - type: dropdown
+    id: platform
     attributes:
-      label: How often does this bug happen?
+      label: Platform
       description: |
-        Following the repro steps above, how easily are you able to reproduce this bug?
+        Which Operating System you were using when the issue occurred?
       options:
-        - Every time
-        - Often
-        - Sometimes
-        - Only once
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - I use a different browser
   - type: textarea
     id: screenshots_or_videos
     attributes:
@@ -61,50 +84,36 @@ body:
         to the following link: https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/attaching-files
       placeholder: |
         You can drag your video or image files inside of this editor...
-  - type: dropdown
-    id: platform
-    attributes:
-      label: Platform
-      description: |
-        Please let us know which Operating System, Browser and Browser version you were using when the issue occurred.
-      options:
-        - Windows
-        - macOS
-        - Linux
-    validations:
-      required: true
-  - type: dropdown
-    id: adapter
-    attributes:
-      label: TOPSTSCHOOL Documentation (Sphinx) adapter
-      description: |
-        Please let us know which adapter of TOPSTSCHOOL Documentation (Sphinx) you were using when the issue occurred.
-      options:
-        - react-form
-        - solid-form
-        - lit-form
-        - vue-form
-        - vanilla
-  - type: input
-    id: rq-version
-    attributes:
-      label: TOPSTSCHOOL Documentation (Sphinx) version
-      description: |
-        Please let us know the exact version of TOPSTSCHOOL Documentation (Sphinx) you were using when the issue occurred. Please don't just put in "latest", as this is subject to change.
-      placeholder: |
-        e.g. v3.30.1
-    validations:
-      required: true
-  - type: input
-    id: ts-version
-    attributes:
-      label: TypeScript version
-      description: |
-        If you are using TypeScript, please let us know the exact version of TypeScript you were using when the issue occurred.
-      placeholder: |
-        e.g. v4.5.4
   - type: textarea
-    id: additional
+    id: additional-context
     attributes:
       label: Additional context
-      description: Add any other context about the problem here.
+      description: Provide any additional context or information you think would be helpful.
+      placeholder: 'e.g., Error logs, related issues, or any recent changes in the environment'
+  - type: checkboxes
+    id: impact-level
+    attributes:
+      label: Bug severity
+      description: How does this bug affect your work?
+      options:
+        - label: Minor
+          required: false
+        - label: Major
+          required: false
+        - label: Critical
+          required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](#). 
+      options:
+        - label: I agree to follow TOPSTSCHOOL Sphinx's Code of Conduct.
+          required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## Next Steps
+        Thank you for filling out the report! Once submitted, our team will review your issue and follow up as needed. Your contribution helps us immensely.
+
+        If you have any questions or need to follow up, feel free to comment below your submission.
